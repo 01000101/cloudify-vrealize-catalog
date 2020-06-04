@@ -1,0 +1,22 @@
+[
+  {
+    "id": "hello-world-blueprint",
+    "name": "hello-world-blueprint",
+    "description": "Deploy Cloudify Hello World Application",
+    "html_url": "https://github.com/cloudify-community/blueprint-examples/hello-world-blueprint",
+    "zip_url": "https://github.com/cloudify-community/blueprint-examples/releases/download/latest/hello-world-example.zip",
+    "readme_url": "https://raw.githubusercontent.com/cloudify-community/blueprint-examples/master/hello-world-blueprint/README.md",
+    "created_at": "2017-05-11T19:32:13Z",
+    "updated_at": "2018-06-06T14:25:37Z"
+  },
+  {
+    "id": "Kubernetes-AWS-EKS",
+    "name": "Kubernetes-AWS-EKS",
+    "description": "Deploy Kubernetes",
+    "html_url": "https://github.com/cloudify-community/blueprint-examples/tree/master/kubernetes",
+    "zip_url": "https://github.com/cloudify-community/blueprint-examples/releases/download/latest/kubernetes-aws-eks.zip",
+    "readme_url": "https://raw.githubusercontent.com/cloudify-community/blueprint-examples/master/kubernetes/README.md",
+    "created_at": "2017-10-19T12:44:56Z",
+    "updated_at": "2018-05-16T17:26:16Z"
+  }
+]
