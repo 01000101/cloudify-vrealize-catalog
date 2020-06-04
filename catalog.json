@@ -1,7 +1,7 @@
 [
   {
     "id": "vrealize-orchestrator",
-    "name": "vrealize-orchestrator",
+    "name": "VMware vRO Workflow",
     "description": "Deploy VMware vRealize Orchestrator workflow",
     "html_url": "https://github.com/01000101/cloudify-vrealize-catalog",
     "zip_url": "https://github.com/01000101/cloudify-vrealize-catalog/archive/master.zip",
