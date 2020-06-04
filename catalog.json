@@ -1,13 +1,13 @@
 [
   {
-    "id": "hello-world-blueprint",
-    "name": "hello-world-blueprint",
-    "description": "Deploy Cloudify Hello World Application",
-    "html_url": "https://github.com/cloudify-community/blueprint-examples/hello-world-blueprint",
-    "zip_url": "https://github.com/cloudify-community/blueprint-examples/releases/download/latest/hello-world-example.zip",
-    "readme_url": "https://raw.githubusercontent.com/cloudify-community/blueprint-examples/master/hello-world-blueprint/README.md",
-    "created_at": "2017-05-11T19:32:13Z",
-    "updated_at": "2018-06-06T14:25:37Z"
+    "id": "vrealize-orchestrator",
+    "name": "vrealize-orchestrator",
+    "description": "Deploy VMware vRealize Orchestrator workflow",
+    "html_url": "https://github.com/01000101/cloudify-vrealize-catalog",
+    "zip_url": "https://github.com/01000101/cloudify-vrealize-catalog/archive/master.zip",
+    "readme_url": "https://raw.githubusercontent.com/01000101/cloudify-vrealize-catalog/master/README.md",
+    "created_at": "2020-06-04T10:30:00Z",
+    "updated_at": "2020-06-04T10:30:00Z"
   },
   {
     "id": "Kubernetes-AWS-EKS",

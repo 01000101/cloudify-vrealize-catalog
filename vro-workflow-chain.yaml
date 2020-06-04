@@ -1,0 +1,168 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Executes a VMware vRealize Orchestrator (vRO) workflow called 
+  "Get resource pool information". This uses the Cloudify REST 
+  node types (part of the "utilities" plugin) as a generic REST 
+  API wrapper. 
+
+  Since vRO API is asynchronous, there are 4 calls involved in this 
+  blueprint. 
+
+  1. Start "Find Resource Pool by name" workflow (returns execution ID)
+  2. Wait for previous execution to complete
+  3. Start "Get resource pool information" workflow (using Resource Pool ID from the prior workflow)
+  4. Wait for previous execution to complete
+
+imports:
+- https://www.getcloudify.org/spec/cloudify/5.0.5/types.yaml
+- plugin:cloudify-utilities-plugin
+
+inputs:
+
+  resource_pool:
+    description: >
+      VMware vSphere Resource Pool name
+    type: string
+    default: cloudify
+
+  vro_host:
+    description: >
+      VMware vRealize Orchestrator FQDN or IP address
+    type: string
+    default: vro.example.com
+
+  vro_port:
+    description: >
+      VMware vRealize Orchestrator VCO port
+    type: integer
+    default: 443
+
+  vro_api_path:
+    description: >
+      VMware vRealize Orchestrator VCO API path suffix (no trailing slash)
+    type: string
+    default: /vco/api
+  
+  vro_username:
+    description: >
+      VMware vRealize Orchestrator API username
+    type: string
+    default: { get_secret: vmware_vro_username }
+
+  vro_password:
+    description: >
+      VMware vRealize Orchestrator API password
+    type: string
+    default: { get_secret: vmware_vro_password }
+
+  vro_workflow_find_resource_pool_id:
+    default: 92d8f5cb-b125-4e60-9c81-ec4ec8178adf
+
+  vro_workflow_get_resource_pool_info_id:
+    default: 98808080808080808080808080808080EA80808001231146624761b79546544c2
+
+dsl_definitions:
+
+
+node_templates:
+
+  wf_find_resource_pool:
+    type: cloudify.rest.Requests
+    properties:
+      hosts:
+      - { get_input: vro_host }
+      port: { get_input: vro_port }
+      ssl: true
+      verify: false
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          inputs:
+            template_file: templates/workflow-find-resource-pool.yaml
+            prerender: true
+            params:
+              RESOURCE_POOL: { get_input: resource_pool }
+              API_PREFIX: { get_input: vro_api_path }
+              WORKFLOW_ID: { get_input: vro_workflow_find_resource_pool_id }
+              USERNAME: { get_input: vro_username }
+              PASSWORD: { get_input: vro_password }
+
+  exec_find_resource_pool:
+    type: cloudify.rest.Requests
+    properties:
+      hosts:
+      - { get_input: vro_host }
+      port: { get_input: vro_port }
+      ssl: true
+      verify: false
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          inputs:
+            template_file: templates/get-execution.yaml
+            prerender: true
+            params:
+              EXECUTION_ID: { get_attribute: [wf_find_resource_pool, result_properties, execution, id] }
+              API_PREFIX: { get_input: vro_api_path }
+              WORKFLOW_ID: { get_input: vro_workflow_find_resource_pool_id }
+              USERNAME: { get_input: vro_username }
+              PASSWORD: { get_input: vro_password }
+    relationships:
+    - type: cloudify.relationships.connected_to
+      target: wf_find_resource_pool
+
+
+  wf_get_resource_pool_info:
+    type: cloudify.rest.Requests
+    properties:
+      hosts:
+      - { get_input: vro_host }
+      port: { get_input: vro_port }
+      ssl: true
+      verify: false
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          inputs:
+            template_file: templates/workflow-get-resource-pool-info.yaml
+            prerender: true
+            params:
+              RESOURCE_POOL_ID: { get_attribute: [exec_find_resource_pool, result_properties, execution, output-parameters, 0, value, sdk-object, id] }
+              API_PREFIX: { get_input: vro_api_path }
+              WORKFLOW_ID: { get_input: vro_workflow_get_resource_pool_info_id }
+              USERNAME: { get_input: vro_username }
+              PASSWORD: { get_input: vro_password }
+    relationships:
+    - type: cloudify.relationships.connected_to
+      target: exec_find_resource_pool
+
+  exec_get_resource_pool_info:
+    type: cloudify.rest.Requests
+    properties:
+      hosts:
+      - { get_input: vro_host }
+      port: { get_input: vro_port }
+      ssl: true
+      verify: false
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          inputs:
+            template_file: templates/get-execution.yaml
+            prerender: true
+            params:
+              EXECUTION_ID: { get_attribute: [wf_get_resource_pool_info, result_properties, execution, id] }
+              API_PREFIX: { get_input: vro_api_path }
+              WORKFLOW_ID: { get_input: vro_workflow_get_resource_pool_info_id }
+              USERNAME: { get_input: vro_username }
+              PASSWORD: { get_input: vro_password }
+    relationships:
+    - type: cloudify.relationships.connected_to
+      target: wf_get_resource_pool_info
+
+outputs:
+  resource_pool:
+    description: Resource Pool information
+    value:
+      info: { get_attribute: [exec_get_resource_pool_info, result_properties, execution, output-parameters] }

@@ -1,0 +1,15 @@
+rest_calls:
+- path: {{ API_PREFIX }}/workflows/{{ WORKFLOW_ID }}/executions/{{ EXECUTION_ID }}
+  method: GET
+  headers:
+    Content-type: application/json
+    Accept: application/json
+  response_format: json
+  auth: 
+    user: {{ USERNAME }}
+    password: {{ PASSWORD }}
+  successful_codes:
+  - 200
+  response_expectation:
+  - ['state', 'completed']
+  response_translation: [execution]

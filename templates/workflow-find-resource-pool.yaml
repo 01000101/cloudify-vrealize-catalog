@@ -1,0 +1,21 @@
+rest_calls:
+- path: {{ API_PREFIX }}/workflows/{{ WORKFLOW_ID }}/executions
+  method: POST
+  headers:
+    Content-type: application/json
+    Accept: application/json
+  response_format: json
+  auth: 
+    user: {{ USERNAME }}
+    password: {{ PASSWORD }}
+  successful_codes:
+  - 202
+  payload:
+    parameters:
+    - value:
+        string:
+          value: {{ RESOURCE_POOL }}
+      type: string
+      name: name
+      scope: local
+  response_translation: [execution]
