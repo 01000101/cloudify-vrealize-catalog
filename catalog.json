@@ -7,16 +7,6 @@
     "zip_url": "https://github.com/01000101/cloudify-vrealize-catalog/archive/master.zip",
     "readme_url": "https://raw.githubusercontent.com/01000101/cloudify-vrealize-catalog/master/README.md",
     "created_at": "2020-06-04T10:30:00Z",
-    "updated_at": "2020-06-04T10:30:00Z"
-  },
-  {
-    "id": "Kubernetes-AWS-EKS",
-    "name": "Kubernetes-AWS-EKS",
-    "description": "Deploy Kubernetes",
-    "html_url": "https://github.com/cloudify-community/blueprint-examples/tree/master/kubernetes",
-    "zip_url": "https://github.com/cloudify-community/blueprint-examples/releases/download/latest/kubernetes-aws-eks.zip",
-    "readme_url": "https://raw.githubusercontent.com/cloudify-community/blueprint-examples/master/kubernetes/README.md",
-    "created_at": "2017-10-19T12:44:56Z",
-    "updated_at": "2018-05-16T17:26:16Z"
+    "updated_at": "2020-06-04T14:28:00Z"
   }
 ]
